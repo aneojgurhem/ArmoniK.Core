@@ -35,7 +35,8 @@ jobs:
     - name: Git magic
       id: rev
       run: |
-        echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+        export SHA=$(git rev-parse HEAD)
+        echo "sha=$SHA" >> $GITHUB_OUTPUT
 
     - name: Git status
       run: |
