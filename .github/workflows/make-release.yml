@@ -32,6 +32,11 @@ jobs:
         git checkout $(git rev-parse HEAD)
         git tag -d ${{ github.ref_name }}
 
+    - name: Git magic
+      id: rev
+      run: |
+        echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+
     - name: Git status
       run: |
         git tag
@@ -46,14 +51,14 @@ jobs:
       with:
         minor-identifier: "feat:"
         release-branch: ${{ github.ref_name }}-pre
-        dev-branch: ${{ github.ref_name }}
+        dev-branch: ${{ steps.rev.outputs.sha }}
 
     - name: Generate Release Version
       id: release
       uses: codacy/git-version@2.7.1
       with:
         minor-identifier: "feat:"
-        release-branch: ${{ github.ref_name }}
+        release-branch: ${{ steps.rev.outputs.sha }}
         dev-branch: main
 
     - name: Print version
