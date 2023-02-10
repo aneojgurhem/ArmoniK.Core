@@ -21,30 +21,18 @@ jobs:
         ref: ${{ github.ref }}
         fetch-depth: 0
 
-    - name: Git status
-      run: |
-        git status
-        git tag
-        echo refname ${{ github.ref_name }}
-
     - name: Git magic
       run: |
         git checkout $(git rev-parse HEAD)
         git tag -d ${{ github.ref_name }}
 
-    - name: Git magic
+    - name: Compute branch for codacy
       id: rev
       run: |
         export SHA=$(git rev-parse HEAD)
         echo "sha=$SHA" >> $GITHUB_OUTPUT
-
-    - name: Git status
-      run: |
-        git tag
-
-    - name: Github metadata
-      run: |
-        echo ${{ github }}
+        export CURRENT_BRANCH=$(git describe --tags)
+        echo "current-branch=$CURRENT_BRANCH" >> $GITHUB_OUTPUT
 
     - name: Generate Pre-Release Version
       id: pre-rel
@@ -52,14 +40,14 @@ jobs:
       with:
         minor-identifier: "feat:"
         release-branch: ${{ github.ref_name }}-pre
-        dev-branch: ${{ steps.rev.outputs.sha }}
+        dev-branch: ${{ steps.rev.outputs.current-branch }}
 
     - name: Generate Release Version
       id: release
       uses: codacy/git-version@2.7.1
       with:
         minor-identifier: "feat:"
-        release-branch: ${{ steps.rev.outputs.sha }}
+        release-branch: ${{ steps.rev.outputs.current-branch }}
         dev-branch: main
 
     - name: Print version
