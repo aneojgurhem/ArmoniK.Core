@@ -54,3 +54,10 @@ jobs:
       run: |
         echo PREREL ${{ steps.pre-rel.outputs.version }} >> $GITHUB_STEP_SUMMARY
         echo RELASE ${{ steps.release.outputs.version }} >> $GITHUB_STEP_SUMMARY
+
+    - name: Validate tag
+      run : test ${{ steps.release.outputs.version }} == ${{ github.ref_name }}
+
+    - name: Delete tag
+      if: failed() || cancelled()
+      run : git push -d ${{ github.ref_name }}
