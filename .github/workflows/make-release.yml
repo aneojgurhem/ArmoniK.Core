@@ -24,7 +24,17 @@ jobs:
     - name: Git status
       run: |
         git status
-        echo ${{ github.ref_name }}
+        git tag
+        echo refname ${{ github.ref_name }}
+
+    - name: Git magic
+      run: |
+        git checkout $(git rev-parse HEAD)
+        git tag -d ${{ github.ref_name }}
+
+    - name: Git status
+      run: |
+        git tag
 
     - name: Github metadata
       run: |
