@@ -18,7 +18,7 @@ extensions = ["myst_parser", 'sphinxcontrib.mermaid']
 
 templates_path = ["_templates"]
 exclude_patterns = ["requirements.txt", "README.md"]
-
+suppress_warnings = ["myst.header"]
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
@@ -36,7 +36,7 @@ source_suffix = {
 
 # -- Options MyST Parser ------------------------------------------------
 myst_fence_as_directive = ["mermaid"]
-myst_heading_anchors = 2
+myst_heading_anchors = 3
 
 # -- Options to show "Edit on GitHub" button ---------------------------------
 html_context = {
